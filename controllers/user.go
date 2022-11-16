@@ -8,9 +8,9 @@ import (
 )
 
 type UserDTO struct {
-	Name string `json:username`
-	Age  int    `json:age`
-	Id   string `json:id`
+	Name string `json:"username"`
+	Age  int    `json:"age"`
+	Id   string `json:"id"`
 }
 
 type IUserController interface {
