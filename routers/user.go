@@ -8,7 +8,7 @@ import (
 )
 
 func RegisterUserRouter(engine *gin.Engine, container *dig.Container) {
-	var error = container.Invoke(func(userController *controllers.IUserController) {
+	var err = container.Invoke(func(userController *controllers.IUserController) {
 		var controller = *userController
 		engine.GET("/user", controller.GetAll)
 		engine.GET("/user/:id", controller.GetById)
@@ -17,7 +17,7 @@ func RegisterUserRouter(engine *gin.Engine, container *dig.Container) {
 		engine.DELETE("/user/:id", controller.Delete)
 	})
 
-	if error != nil {
-		fmt.Printf("error: %v\n", error)
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
 	}
 }

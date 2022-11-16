@@ -7,6 +7,7 @@ import (
 	"GoDEMO/services"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/dig"
+	"os"
 )
 
 func main() {
@@ -15,12 +16,24 @@ func main() {
 
 	routers.RegisterUserRouter(host, contianer)
 
-	host.Run()
+	err := host.Run()
+	if err != nil {
+		println(err.Error())
+	}
 }
 
 func createContianer() *dig.Container {
 	var contianer = dig.New()
-	daos.RegisterDependencyInjection(contianer)
+	var providerName = os.Getenv("DAO_PROVIDER")
+	if providerName == "mysql" {
+		daos.RegisterDependencyInjectionWithMySQL(contianer, func(options *daos.MySQLOptions) {
+			//options.ConnectionString = "root:123456@tcp(localhost:3306)/test"
+			options.ConnectionString = os.Getenv("CONNECTION_STRING")
+		})
+	} else {
+		daos.RegisterDependencyInjectionWithMemory(contianer)
+	}
+
 	services.RegisterDependencyInjection(contianer)
 	controllers.RegisterDependencyInjection(contianer)
 
