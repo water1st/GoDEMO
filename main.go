@@ -7,6 +7,7 @@ import (
 	"GoDEMO/services"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/dig"
+	"log"
 	"os"
 )
 
@@ -24,6 +25,9 @@ func main() {
 
 func createContianer() *dig.Container {
 	var contianer = dig.New()
+	contianer.Provide(func() *log.Logger {
+		return log.Default()
+	})
 	var providerName = os.Getenv("DAO_PROVIDER")
 	if providerName == "mysql" {
 		daos.RegisterDependencyInjectionWithMySQL(contianer, func(options *daos.MySQLOptions) {

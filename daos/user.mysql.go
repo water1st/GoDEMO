@@ -24,10 +24,10 @@ type dbConnectFactory struct {
 	logger  *log.Logger
 }
 
-func newConnectionFactory(options MySQLOptions) iDbConnectFactory {
+func newConnectionFactory(options MySQLOptions, logger *log.Logger) iDbConnectFactory {
 	return dbConnectFactory{
 		options: options,
-		logger:  log.Default(),
+		logger:  logger,
 	}
 }
 
@@ -40,10 +40,10 @@ func (factory dbConnectFactory) Create() *sql.DB {
 	return db
 }
 
-func newMySQLUserDAO(factory iDbConnectFactory) *IUserDAO {
+func newMySQLUserDAO(factory iDbConnectFactory, logger *log.Logger) *IUserDAO {
 	var result IUserDAO = &mysqlUserDAO{
 		factory: factory,
-		logger:  log.Default(),
+		logger:  logger,
 	}
 
 	return &result
