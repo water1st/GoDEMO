@@ -1,17 +1,26 @@
 package daos
 
-import "go.uber.org/dig"
+import (
+	"go.uber.org/dig"
+	"log"
+)
 
 func RegisterDependencyInjectionWithMemory(container *dig.Container) {
-	container.Provide(newMemoryUserDAO)
+	logError(container.Provide(newMemoryUserDAO))
 }
 
 func RegisterDependencyInjectionWithMySQL(container *dig.Container, config func(options *MySQLOptions)) {
 	var options = MySQLOptions{}
 	config(&options)
-	container.Provide(func() MySQLOptions {
+	logError(container.Provide(func() MySQLOptions {
 		return options
-	})
-	container.Provide(newMySQLUserDAO)
-	container.Provide(newConnectionFactory)
+	}))
+	logError(container.Provide(newMySQLUserDAO))
+	logError(container.Provide(newConnectionFactory))
+}
+
+func logError(err error) {
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
 }

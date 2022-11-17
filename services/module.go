@@ -1,10 +1,13 @@
 package services
 
-import "go.uber.org/dig"
+import (
+	"go.uber.org/dig"
+	"log"
+)
 
 func RegisterDependencyInjection(container *dig.Container) {
 	err := container.Provide(NewUserService)
 	if err != nil {
-		println(err.Error())
+		log.Fatalln(err.Error())
 	}
 }

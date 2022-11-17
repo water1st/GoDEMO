@@ -1,7 +1,13 @@
 package controllers
 
-import "go.uber.org/dig"
+import (
+	"go.uber.org/dig"
+	"log"
+)
 
 func RegisterDependencyInjection(container *dig.Container) {
-	container.Provide(NewUserController)
+	err := container.Provide(NewUserController)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
 }

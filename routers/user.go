@@ -2,9 +2,9 @@ package routers
 
 import (
 	"GoDEMO/controllers"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/dig"
+	"log"
 )
 
 func RegisterUserRouter(engine *gin.Engine, container *dig.Container) {
@@ -18,6 +18,6 @@ func RegisterUserRouter(engine *gin.Engine, container *dig.Container) {
 	})
 
 	if err != nil {
-		fmt.Printf("error: %v\n", err)
+		log.Fatalf("error: %v\n", err)
 	}
 }
