@@ -60,12 +60,11 @@ func (mysql *mysqlUserDAO) Add(po UserPO) {
 		println(err.Error())
 	}
 
-	db.Close()
+	_ = db.Close()
 
 }
 
 func (mysql *mysqlUserDAO) Update(po UserPO) {
-
 	const SQL string = "UPDATE `user` SET `Name` = ?, `Age` = ? WHERE Id = ?"
 
 	var db = mysql.factory.Create()
@@ -75,7 +74,7 @@ func (mysql *mysqlUserDAO) Update(po UserPO) {
 		mysql.logger.Println(err.Error())
 	}
 
-	db.Close()
+	_ = db.Close()
 }
 
 func (mysql *mysqlUserDAO) Delete(id string) {
@@ -89,7 +88,7 @@ func (mysql *mysqlUserDAO) Delete(id string) {
 		mysql.logger.Println(err.Error())
 	}
 
-	db.Close()
+	_ = db.Close()
 }
 
 func (mysql *mysqlUserDAO) FindById(id string) UserPO {
@@ -99,9 +98,9 @@ func (mysql *mysqlUserDAO) FindById(id string) UserPO {
 	var db = mysql.factory.Create()
 	var po UserPO
 	var row = db.QueryRow(SQL, id)
-	row.Scan(&po.Id, &po.Name, po.Age)
+	_ = row.Scan(&po.Id, &po.Name, po.Age)
 
-	db.Close()
+	_ = db.Close()
 
 	return po
 }
@@ -115,7 +114,7 @@ func (mysql *mysqlUserDAO) FindAll() []UserPO {
 	var rows, err = db.Query(SQL)
 
 	if err != nil {
-		db.Close()
+		_ = db.Close()
 		mysql.logger.Println(err.Error())
 		return nil
 	}
@@ -123,10 +122,10 @@ func (mysql *mysqlUserDAO) FindAll() []UserPO {
 	var result []UserPO
 	for rows.Next() {
 		var po UserPO
-		rows.Scan(&po.Id, &po.Name, &po.Age)
+		_ = rows.Scan(&po.Id, &po.Name, &po.Age)
 		result = append(result, po)
 	}
 
-	db.Close()
+	_ = db.Close()
 	return result
 }
