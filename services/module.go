@@ -6,7 +6,7 @@ import (
 )
 
 func RegisterDependencyInjection(container *dig.Container) {
-	err := container.Provide(NewUserService)
+	err := container.Provide(newUserService)
 	if err != nil {
 		log.Fatalln(err.Error())
 	}

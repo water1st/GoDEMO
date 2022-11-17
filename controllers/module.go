@@ -6,7 +6,7 @@ import (
 )
 
 func RegisterDependencyInjection(container *dig.Container) {
-	err := container.Provide(NewUserController)
+	err := container.Provide(newUserController)
 	if err != nil {
 		log.Fatalln(err.Error())
 	}

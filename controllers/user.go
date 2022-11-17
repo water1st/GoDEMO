@@ -25,7 +25,7 @@ type (
 	}
 )
 
-func NewUserController(service *services.IUserService) *IUserController {
+func newUserController(service *services.IUserService) *IUserController {
 
 	var result IUserController = &userController{
 		service: service,

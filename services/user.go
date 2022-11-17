@@ -23,7 +23,7 @@ type (
 	}
 )
 
-func NewUserService(dao *daos.IUserDAO) *IUserService {
+func newUserService(dao *daos.IUserDAO) *IUserService {
 
 	var result IUserService = &userService{
 		userDAO: dao,
