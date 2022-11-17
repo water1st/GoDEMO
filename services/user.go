@@ -5,23 +5,23 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-type User struct {
-	Id   string
-	Name string
-	Age  int
-}
-
-type IUserService interface {
-	Add(user User)
-	GetById(id string) User
-	GetAll() []User
-	Delete(id string)
-	Update(user User)
-}
-
-type userService struct {
-	userDAO *daos.IUserDAO
-}
+type (
+	User struct {
+		Id   string
+		Name string
+		Age  int
+	}
+	IUserService interface {
+		Add(user User)
+		GetById(id string) User
+		GetAll() []User
+		Delete(id string)
+		Update(user User)
+	}
+	userService struct {
+		userDAO *daos.IUserDAO
+	}
+)
 
 func NewUserService(dao *daos.IUserDAO) *IUserService {
 

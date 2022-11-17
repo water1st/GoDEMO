@@ -6,11 +6,6 @@ import (
 	"log"
 )
 
-type mysqlUserDAO struct {
-	factory iDbConnectFactory
-	logger  *log.Logger
-}
-
 type (
 	MySQLOptions struct {
 		ConnectionString string
@@ -18,12 +13,15 @@ type (
 	iDbConnectFactory interface {
 		Create() *sql.DB
 	}
+	dbConnectFactory struct {
+		options MySQLOptions
+		logger  *log.Logger
+	}
+	mysqlUserDAO struct {
+		factory iDbConnectFactory
+		logger  *log.Logger
+	}
 )
-
-type dbConnectFactory struct {
-	options MySQLOptions
-	logger  *log.Logger
-}
 
 func newConnectionFactory(options MySQLOptions, logger *log.Logger) iDbConnectFactory {
 	return dbConnectFactory{

@@ -7,23 +7,23 @@ import (
 	"net/http"
 )
 
-type UserDTO struct {
-	Name string `json:"username"`
-	Age  int    `json:"age"`
-	Id   string `json:"id"`
-}
-
-type IUserController interface {
-	Add(context *gin.Context)
-	GetById(context *gin.Context)
-	GetAll(context *gin.Context)
-	Delete(context *gin.Context)
-	Update(context *gin.Context)
-}
-
-type userController struct {
-	service *services.IUserService
-}
+type (
+	UserDTO struct {
+		Name string `json:"username"`
+		Age  int    `json:"age"`
+		Id   string `json:"id"`
+	}
+	IUserController interface {
+		Add(context *gin.Context)
+		GetById(context *gin.Context)
+		GetAll(context *gin.Context)
+		Delete(context *gin.Context)
+		Update(context *gin.Context)
+	}
+	userController struct {
+		service *services.IUserService
+	}
+)
 
 func NewUserController(service *services.IUserService) *IUserController {
 
