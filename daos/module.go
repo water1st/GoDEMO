@@ -9,7 +9,9 @@ func RegisterDependencyInjectionWithMemory(container *dig.Container) {
 func RegisterDependencyInjectionWithMySQL(container *dig.Container, config func(options *MySQLOptions)) {
 	var options = MySQLOptions{}
 	config(&options)
-	container.Provide(options)
+	container.Provide(func() MySQLOptions {
+		return options
+	})
 	container.Provide(newMySQLUserDAO)
 	container.Provide(newConnectionFactory)
 }

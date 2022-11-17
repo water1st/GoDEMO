@@ -31,7 +31,7 @@ func createContianer() *dig.Container {
 	var providerName = os.Getenv("DAO_PROVIDER")
 	if providerName == "mysql" {
 		daos.RegisterDependencyInjectionWithMySQL(contianer, func(options *daos.MySQLOptions) {
-			//options.ConnectionString = "root:123456@tcp(localhost:3306)/test"
+			//options.ConnectionString = "root:123456@tcp(localhost:3306)/test?charset=utf8"
 			options.ConnectionString = os.Getenv("CONNECTION_STRING")
 		})
 	} else {

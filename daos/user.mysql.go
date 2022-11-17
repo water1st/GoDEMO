@@ -2,6 +2,7 @@ package daos
 
 import (
 	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
 	"log"
 )
 
@@ -34,7 +35,7 @@ func newConnectionFactory(options MySQLOptions, logger *log.Logger) iDbConnectFa
 func (factory dbConnectFactory) Create() *sql.DB {
 	var db, err = sql.Open("mysql", factory.options.ConnectionString)
 	if err != nil {
-		factory.logger.Println(err.Error())
+		factory.logger.Fatalln(err.Error())
 	}
 
 	return db
