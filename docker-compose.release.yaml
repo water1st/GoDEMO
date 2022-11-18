@@ -4,12 +4,12 @@ services:
   mysql:
     container_name: golang-test-mysql
     restart: always
-    image: mysql:5.7.16
+    build:
+      context: docker-compose/mysql
+      dockerfile: Dockerfile
     volumes:
-      - go-demo-mysql_data:/var/lib/mysql
-      - go-demo-mysql_logs:/logs
-      - ./docker-compose/mysql/configs/my.cnf:/etc/mysql/my.cnf:ro
-      - ./docker-compose/mysql/scripts/:/docker-entrypoint-initdb.d:ro
+      - mysql_data:/var/lib/mysql
+      - mysql_logs:/logs
     environment:
       - MYSQL_ROOT_PASSWORD=123456
       - TZ=Asia/Shanghai
@@ -24,7 +24,7 @@ services:
     container_name: golang-test-web
     build:
       context: ./
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.release
     environment:
       - DAO_PROVIDER=mysql
       - CONNECTION_STRING=root:123456@tcp(mysql:3306)/test?charset=utf8
