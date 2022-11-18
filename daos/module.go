@@ -15,8 +15,13 @@ func RegisterDependencyInjectionWithMySQL(container *dig.Container, config func(
 	logError(container.Provide(func() MySQLOptions {
 		return options
 	}))
+	logError(container.Provide(newDbInitializer))
 	logError(container.Provide(newMySQLUserDAO))
 	logError(container.Provide(newConnectionFactory))
+
+	container.Invoke(func(initializer *dbInitializer) {
+		initializer.Init()
+	})
 }
 
 func logError(err error) {

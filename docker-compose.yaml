@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  mysql:
+    container_name: golang-test-mysql
+    restart: always
+    image: mysql:5.7.16
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - mysql_logs:/logs
+      - ./docker-compose-configs/my.cnf:/etc/mysql/my.cnf
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - TZ=Asia/Shanghai
+    expose:
+      - 3306
+    networks:
+      go-demo-test:
+        aliases:
+          - mysql
+
+  golang-test:
+    container_name: golang-test-web
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      - DAO_PROVIDER=mysql
+      - CONNECTION_STRING=root:123456@tcp(mysql:3306)/test?charset=utf8
+    ports:
+      - "9090:8080"
+    networks:
+      go-demo-test:
+        aliases:
+          - golang-test
+
+
+networks:
+  go-demo-test:
+    driver: bridge
+
+volumes:
+  mysql_data:
+  mysql_logs:
