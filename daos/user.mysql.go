@@ -21,24 +21,7 @@ type (
 		factory iDbConnectFactory
 		logger  *log.Logger
 	}
-
-	idbInitializer interface {
-		Init()
-	}
-
-	dbInitializer struct {
-		factory iDbConnectFactory
-		logger  *log.Logger
-	}
 )
-
-func newDbInitializer(factory iDbConnectFactory, logger *log.Logger) *idbInitializer {
-	var result idbInitializer = &dbInitializer{
-		factory: factory,
-		logger:  logger,
-	}
-	return &result
-}
 
 func newConnectionFactory(options MySQLOptions, logger *log.Logger) iDbConnectFactory {
 	return dbConnectFactory{
@@ -111,6 +94,7 @@ func (mysql *mysqlUserDAO) FindById(id string) UserPO {
 	const SQL string = "SELECT Id, Name, Age FROM `user` WHERE `Id` = ?"
 
 	var db = mysql.factory.Create()
+
 	var po UserPO
 	var row = db.QueryRow(SQL, id)
 	_ = row.Scan(&po.Id, &po.Name, po.Age)
@@ -143,22 +127,4 @@ func (mysql *mysqlUserDAO) FindAll() []UserPO {
 
 	_ = db.Close()
 	return result
-}
-
-func (initializer *dbInitializer) Init() {
-	var db = initializer.factory.Create()
-
-	const SQL string = `CREATE TABLE IF NOT EXISTS user
-						(
-							Id varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-							Name varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-							Age int(11) NULL DEFAULT NULL,
-							PRIMARY KEY (Id) USING BTREE
-						)ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;`
-	var _, err = db.Exec(SQL)
-	if err != nil {
-		initializer.logger.Fatalln(err.Error())
-	}
-
-	db.Close()
 }
